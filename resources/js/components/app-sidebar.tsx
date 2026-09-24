@@ -1,7 +1,9 @@
 import { Link } from '@inertiajs/react';
 import {
     BookOpen,
+    FileText,
     FolderGit2,
+    FolderTree,
     KeyRound,
     LayoutGrid,
     LockKeyhole,
@@ -27,6 +29,8 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import adminCategories from '@/routes/admin/categories';
+import adminArticles from '@/routes/admin/articles';
 import adminPermissions from '@/routes/admin/permissions';
 import adminRoles from '@/routes/admin/roles';
 import adminUsers from '@/routes/admin/users';
@@ -49,6 +53,18 @@ const mainNav: NavNode[] = [
         href: fileUploadDemo(),
         icon: Upload,
         permissions: [PERMISSIONS.FILE_UPLOAD.INDEX],
+    },
+    {
+        title: 'Categories',
+        href: adminCategories.index(),
+        icon: FolderTree,
+        permissions: [PERMISSIONS.CATEGORIES.INDEX],
+    },
+    {
+        title: 'Articles',
+        href: adminArticles.index(),
+        icon: FileText,
+        permissions: [PERMISSIONS.ARTICLES.INDEX],
     },
     {
         title: 'Access Control',

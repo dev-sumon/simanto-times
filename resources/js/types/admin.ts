@@ -54,6 +54,26 @@ export interface AdminRoleListItem {
     created_at: string;
 }
 
+export interface AdminCategory {
+    id: number;
+    name: string;
+    slug: string;
+    created_at: string;
+}
+
+export interface AdminArticle {
+    id: number;
+    title: string;
+    slug: string;
+    created_at: string;
+}
+
+export interface AdminCategoryForm {
+    id: number;
+    name: string;
+    slug: string;
+}
+
 export interface AdminRoleDetail {
     id: number;
     name: string;
