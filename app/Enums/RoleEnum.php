@@ -69,6 +69,12 @@ enum RoleEnum: string
                 PermissionEnum::CATEGORIES_EDIT,
                 PermissionEnum::CATEGORIES_DELETE,
 
+                PermissionEnum::ARTICLES_INDEX,
+                PermissionEnum::ARTICLES_VIEW,
+                PermissionEnum::ARTICLES_CREATE,
+                PermissionEnum::ARTICLES_EDIT,
+                PermissionEnum::ARTICLES_DELETE,
+
                 PermissionEnum::SETTINGS_VIEW,
                 PermissionEnum::SETTINGS_EDIT,
                 PermissionEnum::SETTINGS_EXPORT,
@@ -87,6 +93,11 @@ enum RoleEnum: string
                 PermissionEnum::CATEGORIES_CREATE,
                 PermissionEnum::CATEGORIES_EDIT,
                 PermissionEnum::CATEGORIES_DELETE,
+                PermissionEnum::ARTICLES_INDEX,
+                PermissionEnum::ARTICLES_VIEW,
+                PermissionEnum::ARTICLES_CREATE,
+                PermissionEnum::ARTICLES_EDIT,
+                PermissionEnum::ARTICLES_DELETE,
             ],
 
             self::AUTHOR => [
@@ -96,6 +107,8 @@ enum RoleEnum: string
                 PermissionEnum::POSTS_EDIT,
                 PermissionEnum::CATEGORIES_INDEX,
                 PermissionEnum::CATEGORIES_VIEW,
+                PermissionEnum::ARTICLES_INDEX,
+                PermissionEnum::ARTICLES_VIEW,
             ],
 
             self::VIEWER => [

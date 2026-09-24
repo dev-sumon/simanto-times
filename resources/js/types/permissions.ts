@@ -51,6 +51,13 @@ export const PERMISSIONS = {
         EDIT: 'categories.edit',
         DELETE: 'categories.delete',
     },
+    ARTICLES: {
+        INDEX: 'articles.index',
+        VIEW: 'articles.view',
+        CREATE: 'articles.create',
+        EDIT: 'articles.edit',
+        DELETE: 'articles.delete',
+    },
     SETTINGS: {
         INDEX: 'settings.index',
         VIEW: 'settings.view',

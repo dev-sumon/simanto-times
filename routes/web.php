@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\PermissionEnum;
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
@@ -80,6 +81,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->middleware(['permission:'.PermissionEnum::CATEGORIES_EDIT->value, HandlePrecognitiveRequests::class]);
             Route::delete('categories/{category}', 'destroy')->name('categories.destroy')
                 ->middleware('permission:'.PermissionEnum::CATEGORIES_DELETE->value);
+        });
+        // Articles — full CRUD with category association.
+        Route::controller(ArticleController::class)->group(function () {
+            Route::get('articles', 'index')->name('articles.index')
+                ->middleware('permission:'.PermissionEnum::ARTICLES_INDEX->value);
+            Route::get('articles/create', 'create')->name('articles.create')
+                ->middleware('permission:'.PermissionEnum::ARTICLES_CREATE->value);
+            Route::post('articles', 'store')->name('articles.store')
+                ->middleware(['permission:'.PermissionEnum::ARTICLES_CREATE->value, HandlePrecognitiveRequests::class]);
+            Route::get('articles/{article}/edit', 'edit')->name('articles.edit')
+                ->middleware('permission:'.PermissionEnum::ARTICLES_EDIT->value);
+            Route::put('articles/{article}', 'update')->name('articles.update')
+                ->middleware(['permission:'.PermissionEnum::ARTICLES_EDIT->value, HandlePrecognitiveRequests::class]);
+            Route::delete('articles/{article}', 'destroy')->name('articles.destroy')
+                ->middleware('permission:'.PermissionEnum::ARTICLES_DELETE->value);
         });
 
         // Permissions — read-only listing + CSV / Excel export.

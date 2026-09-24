@@ -61,6 +61,13 @@ export interface AdminCategory {
     created_at: string;
 }
 
+export interface AdminArticle {
+    id: number;
+    title: string;
+    slug: string;
+    created_at: string;
+}
+
 export interface AdminCategoryForm {
     id: number;
     name: string;
