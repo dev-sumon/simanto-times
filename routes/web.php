@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\PermissionEnum;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -63,6 +64,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->middleware(['permission:'.PermissionEnum::ROLES_EDIT->value, HandlePrecognitiveRequests::class]);
             Route::delete('roles/{role}', 'destroy')->name('roles.destroy')
                 ->middleware('permission:'.PermissionEnum::ROLES_DELETE->value);
+        });
+
+        // Categories — name + unique slug taxonomy.
+        Route::controller(CategoryController::class)->group(function () {
+            Route::get('categories', 'index')->name('categories.index')
+                ->middleware('permission:'.PermissionEnum::CATEGORIES_INDEX->value);
+            Route::get('categories/create', 'create')->name('categories.create')
+                ->middleware('permission:'.PermissionEnum::CATEGORIES_CREATE->value);
+            Route::post('categories', 'store')->name('categories.store')
+                ->middleware(['permission:'.PermissionEnum::CATEGORIES_CREATE->value, HandlePrecognitiveRequests::class]);
+            Route::get('categories/{category}/edit', 'edit')->name('categories.edit')
+                ->middleware('permission:'.PermissionEnum::CATEGORIES_EDIT->value);
+            Route::put('categories/{category}', 'update')->name('categories.update')
+                ->middleware(['permission:'.PermissionEnum::CATEGORIES_EDIT->value, HandlePrecognitiveRequests::class]);
+            Route::delete('categories/{category}', 'destroy')->name('categories.destroy')
+                ->middleware('permission:'.PermissionEnum::CATEGORIES_DELETE->value);
         });
 
         // Permissions — read-only listing + CSV / Excel export.

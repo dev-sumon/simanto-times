@@ -44,6 +44,13 @@ export const PERMISSIONS = {
         INDEX: 'permissions.index',
         EXPORT: 'permissions.export',
     },
+    CATEGORIES: {
+        INDEX: 'categories.index',
+        VIEW: 'categories.view',
+        CREATE: 'categories.create',
+        EDIT: 'categories.edit',
+        DELETE: 'categories.delete',
+    },
     SETTINGS: {
         INDEX: 'settings.index',
         VIEW: 'settings.view',
@@ -155,8 +162,8 @@ export function groupPermissions(
         const key = permission.group ?? 'Other';
 
         if (!acc[key]) {
-acc[key] = [];
-}
+            acc[key] = [];
+        }
 
         acc[key].push(permission);
 

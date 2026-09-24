@@ -39,6 +39,13 @@ enum PermissionEnum: string
     case PERMISSIONS_INDEX = 'permissions.index';
     case PERMISSIONS_EXPORT = 'permissions.export';
 
+    // CATEGORIES
+    case CATEGORIES_INDEX = 'categories.index';
+    case CATEGORIES_VIEW = 'categories.view';
+    case CATEGORIES_CREATE = 'categories.create';
+    case CATEGORIES_EDIT = 'categories.edit';
+    case CATEGORIES_DELETE = 'categories.delete';
+
     // SETTINGS
     case SETTINGS_INDEX = 'settings.index';
     case SETTINGS_VIEW = 'settings.view';
@@ -84,6 +91,12 @@ enum PermissionEnum: string
 
             self::PERMISSIONS_INDEX,
             self::PERMISSIONS_EXPORT => 'Permissions',
+
+            self::CATEGORIES_INDEX,
+            self::CATEGORIES_VIEW,
+            self::CATEGORIES_CREATE,
+            self::CATEGORIES_EDIT,
+            self::CATEGORIES_DELETE => 'Categories',
 
             self::SETTINGS_INDEX,
             self::SETTINGS_VIEW,
