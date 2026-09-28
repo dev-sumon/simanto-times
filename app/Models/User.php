@@ -47,4 +47,9 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class, 'user_id');
+    }
 }
