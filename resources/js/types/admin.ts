@@ -68,6 +68,16 @@ export interface AdminArticle {
     created_at: string;
 }
 
+export interface ArticleCategoryOption {
+    id: number;
+    name: string;
+}
+
+export interface EnumOption {
+    value: string;
+    label: string;
+}
+
 export interface AdminCategoryForm {
     id: number;
     name: string;
