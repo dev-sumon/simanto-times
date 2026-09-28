@@ -21,4 +21,8 @@ class ArticleController extends Controller
             'filters' => ['search' => $search],
         ]);
     }
+    public function create(): Response
+    {
+        return Inertia::render('admin/articles/create');
+    }
 }
