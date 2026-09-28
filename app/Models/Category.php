@@ -12,4 +12,16 @@ class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'created_at',
+        'updated_at',
+    ];
+
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class, 'category_id');
+    }
 }
