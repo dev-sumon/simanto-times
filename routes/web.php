@@ -3,6 +3,7 @@
 use App\Enums\PermissionEnum;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\EditorMediaController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -97,6 +98,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('articles/{article}', 'destroy')->name('articles.destroy')
                 ->middleware('permission:'.PermissionEnum::ARTICLES_DELETE->value);
         });
+
+        Route::post('editor-media', [EditorMediaController::class, 'store'])
+            ->name('editor-media.store');
 
         // Permissions — read-only listing + CSV / Excel export.
         Route::controller(PermissionController::class)->group(function () {

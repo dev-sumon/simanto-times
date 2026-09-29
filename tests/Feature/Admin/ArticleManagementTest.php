@@ -106,7 +106,7 @@ test('publishing without a date stamps the current time', function () {
     $article = Article::query()->first();
 
     expect($article->status)->toBe(ArticleStatusEnum::PUBLISHED)
-        ->and($article->published_at?->equalTo(now()))->toBeTrue();
+        ->and($article->published_at?->toDateTimeString())->toBe(now()->toDateTimeString());
 });
 
 test('the slug must be unique', function () {
@@ -131,4 +131,19 @@ test('creating an article validates required fields', function () {
     $this->actingAs($this->admin)
         ->post(route('admin.articles.store'), [])
         ->assertSessionHasErrors(['title', 'excerpt', 'content', 'featured_image', 'status', 'visibility']);
+});
+
+test('empty html content is treated as missing', function () {
+    Storage::fake('public');
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.articles.store'), [
+            'title' => 'Empty Body',
+            'excerpt' => 'A short summary.',
+            'content' => '<p></p>',
+            'featured_image' => UploadedFile::fake()->image('hero.jpg'),
+            'status' => ArticleStatusEnum::DRAFT->value,
+            'visibility' => ArticleVisibilityEnum::PUBLIC->value,
+        ])
+        ->assertSessionHasErrors('content');
 });

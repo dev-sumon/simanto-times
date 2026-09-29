@@ -103,5 +103,11 @@ class StoreArticleRequest extends FormRequest
         } elseif (! is_array($keywords)) {
             $this->merge(['seo_keywords' => []]);
         }
+
+        $content = $this->input('content');
+
+        if (is_string($content) && trim(strip_tags($content)) === '') {
+            $this->merge(['content' => '']);
+        }
     }
 }
