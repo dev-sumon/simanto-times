@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Clock, Loader2, Save } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useMemo } from 'react';
+import { RichTextEditor } from '@/components/editor/rich-text-editor';
 import FileUpload from '@/components/file-upload';
 import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +26,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { store as storeEditorMedia } from '@/routes/admin/editor-media';
 import type { ArticleCategoryOption, EnumOption } from '@/types/admin';
 
 function toSlug(value: string): string {
@@ -35,14 +37,60 @@ function toSlug(value: string): string {
         .replace(/^-+|-+$/g, '');
 }
 
+function stripHtml(value: string): string {
+    return value
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 function readingMinutes(content: string): number {
-    const words = content.trim().split(/\s+/).filter(Boolean).length;
+    const words = stripHtml(content).split(/\s+/).filter(Boolean).length;
 
     if (words === 0) {
         return 0;
     }
 
     return Math.max(1, Math.ceil(words / 200));
+}
+
+function csrfToken(): string {
+    const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
+
+    return match ? decodeURIComponent(match[1]) : '';
+}
+
+async function uploadEditorImage(file: File): Promise<string> {
+    const body = new FormData();
+    body.append('image', file);
+
+    const response = await fetch(storeEditorMedia.url(), {
+        method: 'POST',
+        body,
+        credentials: 'same-origin',
+        headers: {
+            Accept: 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-XSRF-TOKEN': csrfToken(),
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Upload failed');
+    }
+
+    const payload: unknown = await response.json();
+
+    if (
+        typeof payload !== 'object' ||
+        payload === null ||
+        typeof (payload as { url?: unknown }).url !== 'string'
+    ) {
+        throw new Error('Upload failed');
+    }
+
+    return (payload as { url: string }).url;
 }
 
 export interface ArticleFormDefaults {
@@ -217,16 +265,17 @@ export function ArticleForm({
                                             : `${minutes} min read`}
                                     </span>
                                 </div>
-                                <Textarea
+                                <RichTextEditor
                                     id="content"
                                     value={form.data.content}
-                                    onChange={(e) =>
-                                        form.setData('content', e.target.value)
+                                    onChange={(html) =>
+                                        form.setData('content', html)
                                     }
                                     onBlur={() => form.validate('content')}
-                                    aria-invalid={form.invalid('content')}
+                                    invalid={form.invalid('content')}
                                     placeholder="Write the full article…"
-                                    className="min-h-64"
+                                    disabled={form.processing}
+                                    onUploadImage={uploadEditorImage}
                                 />
                                 <InputError message={form.errors.content} />
                             </div>
@@ -329,9 +378,7 @@ export function ArticleForm({
                                             e.target.value,
                                         )
                                     }
-                                    onBlur={() =>
-                                        form.validate('seo_keywords')
-                                    }
+                                    onBlur={() => form.validate('seo_keywords')}
                                     aria-invalid={form.invalid('seo_keywords')}
                                     placeholder="Comma-separated, e.g. weather, city, flood"
                                 />
@@ -547,9 +594,7 @@ export function ArticleForm({
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <InputError
-                                    message={form.errors.category_id}
-                                />
+                                <InputError message={form.errors.category_id} />
                             </div>
 
                             <FlagSwitch
